@@ -1,0 +1,14 @@
+# Data stays out of the repo (default location is ~/cr_data; set CR_DATA to use ./data)
+data/
+*.parquet
+Battles*.csv
+battles*.csv
+CardMasterList*.csv
+Wincons.csv
+duckdb_tmp/
+
+# Environment and OS files
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
