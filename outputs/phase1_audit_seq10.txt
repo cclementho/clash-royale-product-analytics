@@ -1,0 +1,272 @@
+PHASE 1 AUDIT  (battle checks: all rows; sequence checks: 10% of players)
+
+B0. Schema
+              column_name              column_type
+                   row_id                   BIGINT
+              battle_time TIMESTAMP WITH TIME ZONE
+                 arena_id                   DOUBLE
+             game_mode_id                   DOUBLE
+    avg_starting_trophies                   DOUBLE
+               winner_tag                  VARCHAR
+ winner_starting_trophies                   DOUBLE
+     winner_trophy_change                   DOUBLE
+            winner_crowns                   DOUBLE
+     winner_king_tower_hp                   DOUBLE
+winner_princess_towers_hp                  VARCHAR
+          winner_clan_tag                  VARCHAR
+     winner_clan_badge_id                   DOUBLE
+                loser_tag                  VARCHAR
+  loser_starting_trophies                   DOUBLE
+      loser_trophy_change                   DOUBLE
+             loser_crowns                   DOUBLE
+      loser_king_tower_hp                   DOUBLE
+           loser_clan_tag                  VARCHAR
+      loser_clan_badge_id                   DOUBLE
+ loser_princess_towers_hp                  VARCHAR
+           tournament_tag                  VARCHAR
+          winner_card1_id                   BIGINT
+       winner_card1_level                   BIGINT
+          winner_card2_id                   BIGINT
+       winner_card2_level                   BIGINT
+          winner_card3_id                   BIGINT
+       winner_card3_level                   BIGINT
+          winner_card4_id                   BIGINT
+       winner_card4_level                   BIGINT
+          winner_card5_id                   BIGINT
+       winner_card5_level                   BIGINT
+          winner_card6_id                   BIGINT
+       winner_card6_level                   BIGINT
+          winner_card7_id                   BIGINT
+       winner_card7_level                   BIGINT
+          winner_card8_id                   BIGINT
+       winner_card8_level                   BIGINT
+        winner_cards_list                  VARCHAR
+  winner_total_card_level                   BIGINT
+       winner_troop_count                   BIGINT
+   winner_structure_count                   BIGINT
+       winner_spell_count                   BIGINT
+      winner_common_count                   BIGINT
+        winner_rare_count                   BIGINT
+        winner_epic_count                   BIGINT
+   winner_legendary_count                   BIGINT
+        winner_elixir_avg                   DOUBLE
+           loser_card1_id                   BIGINT
+        loser_card1_level                   BIGINT
+           loser_card2_id                   BIGINT
+        loser_card2_level                   BIGINT
+           loser_card3_id                   BIGINT
+        loser_card3_level                   BIGINT
+           loser_card4_id                   BIGINT
+        loser_card4_level                   BIGINT
+           loser_card5_id                   BIGINT
+        loser_card5_level                   BIGINT
+           loser_card6_id                   BIGINT
+        loser_card6_level                   BIGINT
+           loser_card7_id                   BIGINT
+        loser_card7_level                   BIGINT
+           loser_card8_id                   BIGINT
+        loser_card8_level                   BIGINT
+         loser_cards_list                  VARCHAR
+   loser_total_card_level                   BIGINT
+        loser_troop_count                   BIGINT
+    loser_structure_count                   BIGINT
+        loser_spell_count                   BIGINT
+       loser_common_count                   BIGINT
+         loser_rare_count                   BIGINT
+         loser_epic_count                   BIGINT
+    loser_legendary_count                   BIGINT
+         loser_elixir_avg                   DOUBLE
+              source_file                  VARCHAR 
+
+B0b. Columns with nulls (all raw rows)
+winner_princess_towers_hp      793976
+winner_clan_tag               1560539
+winner_clan_badge_id          1560539
+loser_king_tower_hp          10875795
+loser_clan_tag                2068371
+loser_clan_badge_id           2068371
+loser_princess_towers_hp     20120926
+tournament_tag               37973387 
+
+B0c. Reference files: 102 cards, 25 win-condition cards
+
+B1. Row count and date range (all raw files, all modes)
+  n_rows  files          first_battle_utc           last_battle_utc  days_covered
+37973387     10 2020-12-07 07:00:00+00:00 2021-01-04 08:04:00+00:00          28.0 
+
+B2. Per source file: rows and time range (each file overlaps the previous one)
+                                  source_file   n_rows                 first_utc                  last_utc
+battlesstaging_12072020_to_12262020_wl_tagged 16795959 2020-12-07 07:00:00+00:00 2020-12-27 00:03:37+00:00
+            battlesstaging_12272020_wl_tagged  1911743 2020-12-26 22:00:41+00:00 2020-12-28 00:03:52+00:00
+            battlesstaging_12282020_wl_tagged  1902766 2020-12-27 19:01:19+00:00 2020-12-29 00:03:35+00:00
+            battlesstaging_12292020_wl_tagged  2345681 2020-12-28 21:00:26+00:00 2020-12-30 00:04:58+00:00
+            battlesstaging_12302020_wl_tagged  2407876 2020-12-29 21:03:25+00:00 2020-12-31 00:00:59+00:00
+            battlesstaging_12312020_wl_tagged  2626517 2020-12-30 21:00:22+00:00 2021-01-01 00:03:55+00:00
+            battlesstaging_01012021_wl_tagged  2823527 2020-12-31 21:01:52+00:00 2021-01-02 00:04:20+00:00
+            battlesstaging_01022021_wl_tagged  2944820 2021-01-01 21:01:16+00:00 2021-01-03 00:04:25+00:00
+            battlesstaging_01032021_wl_tagged  3108555 2021-01-02 21:00:01+00:00 2021-01-04 00:04:40+00:00
+            battlesstaging_01042021_wl_tagged  1105943 2021-01-03 21:03:56+00:00 2021-01-04 08:04:00+00:00 
+
+B3. Game modes: all three large IDs give about +/-29.5 trophies (ladder)
+ game_mode_id   n_rows  avg_winner_trophy_change  avg_loser_trophy_change  first_day   last_day  rows_with_tournament_tag
+   72000006.0 17410767                      29.5                    -29.3 2020-12-07 2021-01-04                         0
+   72000201.0 14476458                      29.5                    -29.3 2020-12-07 2021-01-04                         0
+   72000044.0  6084551                      29.5                    -29.2 2020-12-25 2020-12-28                         0
+   72000023.0     1611                      23.9                    -23.5 2020-12-07 2021-01-04                         0 
+
+B4. Duplicates on the battle key (time + unordered player pair), ladder rows
+ ladder_rows  distinct_battle_keys  duplicate_rows  keys_with_copies  keys_spanning_two_files
+  37971776.0              37802265        169511.0            169511                   169509 
+
+B5. Rows removed by dedupe, per file (raw ladder rows minus kept rows)
+                                  source_file  raw_ladder     kept  removed
+            battlesstaging_01012021_wl_tagged     2823416  2823416        0
+            battlesstaging_01022021_wl_tagged     2944708  2917268    27440
+            battlesstaging_01032021_wl_tagged     3108457  3082069    26388
+            battlesstaging_01042021_wl_tagged     1105920  1084893    21027
+battlesstaging_12072020_to_12262020_wl_tagged    16795136 16795135        1
+            battlesstaging_12272020_wl_tagged     1911648  1910527     1121
+            battlesstaging_12282020_wl_tagged     1902685  1888901    13784
+            battlesstaging_12292020_wl_tagged     2345593  2334757    10836
+            battlesstaging_12302020_wl_tagged     2407800  2386813    20987
+            battlesstaging_12312020_wl_tagged     2626413  2578486    47927 
+
+B6. Battles per day after dedupe (collection volume over time)
+   day_utc  battles
+2020-12-07    51192
+2020-12-08    89588
+2020-12-09    91285
+2020-12-10    70268
+2020-12-11    90921
+2020-12-12    74080
+2020-12-13   109365
+2020-12-14   106297
+2020-12-15    75653
+2020-12-16    92104
+2020-12-17    98414
+2020-12-18  1005274
+2020-12-19  1568643
+2020-12-20  2009198
+2020-12-21  1940518
+2020-12-22  1783077
+2020-12-23  1658133
+2020-12-24  1771548
+2020-12-25  2040595
+2020-12-26  2146508
+2020-12-27  1909927
+2020-12-28  1884894
+2020-12-29  2359059
+2020-12-30  2391910
+2020-12-31  2597488
+2021-01-01  2800032
+2021-01-02  2939414
+2021-01-03  3088121
+2021-01-04   958759 
+
+B7. Card levels: min and max observed level per card
+ min_lvl  max_lvl  cards
+       1       13     28
+       3       13     28
+       6       13     28
+       9       13     18 
+
+B8. Card level and trophy gaps between the two players in a battle
+abs_avg_level_gap_q50_q90_q99 abs_trophy_gap_q50_q90_q99
+            [0.25, 1.25, 2.5]          [7.0, 29.0, 41.0] 
+
+S1. Sampled players and their battles
+ players  player_battles  mean_battles_per_player
+ 1111951         7561011                      6.8 
+
+S2. Battles per player
+battles_per_player  players  pct_players  pct_player_battles
+                 1   396027         35.6                 5.2
+               2-4   321895         28.9                11.6
+               5-9   187094         16.8                16.4
+             10-24   152643         13.7                30.1
+             25-99    50427          4.5                26.6
+              100+     3865          0.3                10.0 
+
+S3. Distinct UTC days each player appears on, steady period Dec 19 to Jan 3 (16 days)
+active_days  players  pct_players
+          1   463886         43.1
+        2-3   308953         28.7
+        4-7   221505         20.6
+       8-14    80029          7.4
+      15-16     2205          0.2 
+
+S4. Same player in two different battles at the same second (impossible in play)
+ player_seconds_with_2plus_battles
+                              9964 
+
+S5. Gap to next observed battle vs trophy-chain continuity (steady period)
+       gap_to_next   pairs  pct_pairs  pct_chain_intact
+a: 0 (same second)    8400        0.1              38.3
+          b: (0,3)  325179        5.4              98.2
+          c: [3,5) 1679129       28.1              99.3
+         d: [5,10)  454834        7.6              79.6
+        e: [10,30)  367616        6.2              53.6
+        f: [30,60)  198856        3.3              54.4
+       g: [60,180)  307845        5.2              37.3
+       h: [3h,24h) 1127532       18.9              14.8
+           i: 24h+ 1503970       25.2               3.6 
+
+S6. Size of the trophy discrepancy when the chain breaks (about 30 = one missing battle)
+          q25_q50_q75_q90
+[29.0, 54.0, 88.0, 139.0] 
+
+S7. Chain continuity after a WIN vs after a LOSS, within gap bands (steady period)
+    gap_band prev_outcome   pairs  pct_chain_intact
+  a: <10 min   after loss 1212008              95.0
+  a: <10 min    after win 1247134              96.0
+b: 10-60 min   after loss  288486              52.7
+b: 10-60 min    after win  277986              55.2
+   c: 1-24 h   after loss  703517              18.0
+   c: 1-24 h    after win  731860              21.2
+     d: 24h+   after loss  743750               3.4
+     d: 24h+    after win  760220               3.9 
+
+S8. Chain continuity by day (is collection consistent over time?)
+   day_utc  pairs  pct_chain_intact  pct_gap_under_10min
+2020-12-07  10033              52.4                 35.6
+2020-12-08  17394              53.2                 36.2
+2020-12-09  17934              53.0                 36.1
+2020-12-10  13819              51.2                 36.3
+2020-12-11  17670              51.0                 36.2
+2020-12-12  14476              50.6                 37.1
+2020-12-13  21503              53.5                 37.8
+2020-12-14  20230              52.4                 36.0
+2020-12-15  15093              51.1                 36.7
+2020-12-16  18434              52.6                 36.9
+2020-12-17  19085              53.2                 36.0
+2020-12-18 183817              42.2                 34.5
+2020-12-19 283512              41.8                 34.8
+2020-12-20 364647              43.5                 36.0
+2020-12-21 354880              43.5                 35.7
+2020-12-22 322839              43.2                 35.5
+2020-12-23 301429              43.5                 35.5
+2020-12-24 321055              44.1                 36.2
+2020-12-25 361730              45.0                 37.3
+2020-12-26 377953              46.0                 38.1
+2020-12-27 332129              45.7                 38.0
+2020-12-28 330404              46.5                 38.3
+2020-12-29 421515              52.2                 42.3
+2020-12-30 418988              53.5                 43.4
+2020-12-31 443209              54.8                 44.3
+2021-01-01 459351              56.4                 46.1
+2021-01-02 459451              60.0                 49.7
+2021-01-03 420269              68.2                 58.3
+2021-01-04 106211              79.4                 73.7 
+
+S9. Lengths of unbroken chain runs (a spike at 24 links = 25 battles = one API battle log)
+ links  runs
+    20  1183
+    21   981
+    22   843
+    23   743
+    24  1582
+    25   530
+    26   364
+    27   289
+    28   271 
+

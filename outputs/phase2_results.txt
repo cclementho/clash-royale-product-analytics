@@ -1,0 +1,84 @@
+PHASE 2 RESULTS  (dev_pct=None; steady period 2020-12-19 to 2021-01-04 exclusive)
+
+1. Population
+ players_with_51plus_steady_battles  well_covered_players  median_pairs_per_player  mean_pct_links_intact  battles_analysed  pct_wins
+                             119433                 24791                    106.0                   95.0           3474399      51.5 
+
+2. Outcome labels, pooled over battles (percent)
+      prev  battles  yes10  no10  unk10  yes30  unk30
+after loss  1686018   73.7  22.0    4.3   79.4    3.8
+ after win  1788381   67.4  27.8    4.8   74.1    4.3 
+
+3. Within-player: after LOSS (A) minus after WIN (B), re-queue rate in pp
+  within 10 min: players=24,791  rate A [70.0, 74.8]  rate B [63.5, 68.8]  diff(certain-only) +6.50 pp (95% CI +6.18, +6.83)  worst-case bounds [+1.22, +11.22] (CI-extended [+0.91, +11.54])
+  within 30 min: players=24,791  rate A [75.7, 80.0]  rate B [69.8, 74.7]  diff(certain-only) +5.90 pp (95% CI +5.60, +6.20)  worst-case bounds [+0.96, +10.21] (CI-extended [+0.68, +10.50])
+
+4. Within-player by streak length: losing streak k (A) minus winning streak k (B), 10 min
+  streak 1 (10 min): players=24,790  rate A [72.5, 74.6]  rate B [68.9, 71.3]  diff(certain-only) +3.57 pp (95% CI +3.26, +3.90)  worst-case bounds [+1.24, +5.68] (CI-extended [+0.93, +6.00])
+  streak 1 (30 min): players=24,790  rate A [77.9, 79.9]  rate B [74.6, 76.8]  diff(certain-only) +3.29 pp (95% CI +2.99, +3.58)  worst-case bounds [+1.11, +5.23] (CI-extended [+0.82, +5.52])
+  streak 2 (10 min): players=24,779  rate A [71.2, 73.1]  rate B [64.3, 66.7]  diff(certain-only) +6.87 pp (95% CI +6.46, +7.26)  worst-case bounds [+4.51, +8.79] (CI-extended [+4.12, +9.18])
+  streak 2 (30 min): players=24,779  rate A [76.9, 78.7]  rate B [70.7, 72.9]  diff(certain-only) +6.14 pp (95% CI +5.76, +6.53)  worst-case bounds [+3.91, +7.93] (CI-extended [+3.54, +8.31])
+  streak 3+ (10 min): players=24,638  rate A [71.6, 73.6]  rate B [60.8, 63.6]  diff(certain-only) +10.82 pp (95% CI +10.37, +11.26)  worst-case bounds [+8.00, +12.84] (CI-extended [+7.57, +13.25])
+  streak 3+ (30 min): players=24,638  rate A [77.2, 79.1]  rate B [67.6, 70.3]  diff(certain-only) +9.60 pp (95% CI +9.18, +10.00)  worst-case bounds [+6.91, +11.45] (CI-extended [+6.50, +11.84])
+  (streak of 1 means the previous battle had the opposite result; 3+ means at least 3 in a row)
+
+5. Re-queue rate by streak, averaged over players who have that streak type (10 min, percent)
+cell  players  battles  rate10_lo  rate10_hi  rate30_lo  rate30_hi
+  L1    24790 815783.0      72.50      74.61      77.91      79.85
+  L2    24783 386800.0      71.20      73.12      76.86      78.65
+  L3    24660 372158.0      71.58      73.60      77.19      79.05
+  W1    24790 818963.0      68.93      71.26      74.62      76.81
+  W2    24786 415294.0      64.33      66.70      70.72      72.96
+  W3    24767 436449.0      60.78      63.60      67.61      70.30
+ pct_battles_streak_unknown
+                        6.6 
+
+6. Reference-point checks (battles that are 3rd or later in a session; session = no gap >= 60 min)
+  after a LOSS, below session-start trophies (A) vs at/above (B), 10 min: players=23,248  rate A [70.1, 72.6]  rate B [70.0, 72.4]  diff(certain-only) +0.09 pp (95% CI -0.20, +0.38)  worst-case bounds [-2.32, +2.56] (CI-extended [-2.61, +2.83])
+  after a WIN, new session high (A) vs not (B), 10 min: players=24,527  rate A [61.9, 65.2]  rate B [69.7, 72.0]  diff(certain-only) -7.81 pp (95% CI -8.09, -7.55)  worst-case bounds [-10.12, -4.46] (CI-extended [-10.39, -4.20])
+  after a LOSS, below session-start trophies (A) vs at/above (B), 30 min: players=23,248  rate A [75.7, 78.0]  rate B [75.7, 77.9]  diff(certain-only) +0.05 pp (95% CI -0.22, +0.33)  worst-case bounds [-2.16, +2.31] (CI-extended [-2.42, +2.58])
+  after a WIN, new session high (A) vs not (B), 30 min: players=24,527  rate A [68.5, 71.7]  rate B [75.3, 77.4]  diff(certain-only) -6.80 pp (95% CI -7.06, -6.54)  worst-case bounds [-8.93, -3.64] (CI-extended [-9.19, -3.38])
+
+7. Fatigue check: player fixed effects, with and without session position + minutes-into-session controls
+   (linear probability model, 10 min outcome, SEs clustered by player; 'lower' codes unknown as no,
+    'upper' codes unknown as yes)
+  outcome = lower10
+    loss vs win, no controls                      +6.41 pp  (95% CI +6.10, +6.72)
+    loss vs win, fatigue controls                 +6.51 pp  (95% CI +6.20, +6.82)
+    win streak 2 vs 1, no controls                -4.68 pp  (95% CI -4.86, -4.49)
+    win streak 3+ vs 1, no controls               -8.12 pp  (95% CI -8.37, -7.88)
+    loss streak 3+ vs 1, no controls              -0.85 pp  (95% CI -1.05, -0.66)
+    loss 3+ vs win 3+, no controls               +10.79 pp  (95% CI +10.36, +11.21)
+    win streak 2 vs 1, fatigue controls           -4.70 pp  (95% CI -4.88, -4.51)
+    win streak 3+ vs 1, fatigue controls          -7.92 pp  (95% CI -8.16, -7.69)
+    loss streak 3+ vs 1, fatigue controls         -1.19 pp  (95% CI -1.38, -1.00)
+    loss 3+ vs win 3+, fatigue controls          +10.47 pp  (95% CI +10.06, +10.87)
+    new session high (wins), no controls          -7.73 pp  (95% CI -7.96, -7.51)
+    new session high (wins), fatigue controls     -7.61 pp  (95% CI -7.83, -7.38)
+  outcome = upper10
+    loss vs win, no controls                      +5.93 pp  (95% CI +5.63, +6.22)
+    loss vs win, fatigue controls                 +5.95 pp  (95% CI +5.65, +6.25)
+    win streak 2 vs 1, no controls                -4.63 pp  (95% CI -4.81, -4.46)
+    win streak 3+ vs 1, no controls               -7.79 pp  (95% CI -8.03, -7.56)
+    loss streak 3+ vs 1, no controls              -1.03 pp  (95% CI -1.21, -0.84)
+    loss 3+ vs win 3+, no controls               +10.10 pp  (95% CI +9.70, +10.51)
+    win streak 2 vs 1, fatigue controls           -4.64 pp  (95% CI -4.82, -4.46)
+    win streak 3+ vs 1, fatigue controls          -7.59 pp  (95% CI -7.82, -7.37)
+    loss streak 3+ vs 1, fatigue controls         -1.34 pp  (95% CI -1.52, -1.15)
+    loss 3+ vs win 3+, fatigue controls           +9.81 pp  (95% CI +9.41, +10.20)
+    new session high (wins), no controls          -6.79 pp  (95% CI -7.01, -6.58)
+    new session high (wins), fatigue controls     -6.82 pp  (95% CI -7.04, -6.60)
+
+8. Season-end check: outcome battles before 2021-01-01 only (Dec 19 to Dec 31), same players, 10 min
+  loss vs win: players=24,574  rate A [66.3, 74.7]  rate B [58.9, 68.1]  diff(certain-only) +7.40 pp (95% CI +7.04, +7.75)  worst-case bounds [-1.80, +15.84] (CI-extended [-2.14, +16.18])
+  streak 1: players=24,315  rate A [70.8, 73.7]  rate B [66.5, 69.8]  diff(certain-only) +4.31 pp (95% CI +3.93, +4.69)  worst-case bounds [+1.01, +7.20] (CI-extended [+0.63, +7.57])
+  streak 2: players=23,663  rate A [70.1, 72.2]  rate B [62.0, 64.8]  diff(certain-only) +8.07 pp (95% CI +7.57, +8.58)  worst-case bounds [+5.27, +10.17] (CI-extended [+4.79, +10.68])
+  streak 3+: players=22,030  rate A [70.6, 73.0]  rate B [58.2, 61.5]  diff(certain-only) +12.39 pp (95% CI +11.84, +12.94)  worst-case bounds [+9.13, +14.71] (CI-extended [+8.59, +15.25])
+cell  players  rate10_lo  rate10_hi
+  L1    24378      70.74      73.71
+  L2    23860      69.90      72.04
+  L3    22695      70.48      72.86
+  W1    24403      66.44      69.83
+  W2    24117      61.74      64.63
+  W3    23524      57.93      61.37
+

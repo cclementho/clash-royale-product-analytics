@@ -1,0 +1,76 @@
+PHASE 3 RESULTS  (main and per-band models: all battles; deck check: 5% sample; skill-bias check: all players with 50+ battles)
+
+1. Side assignment check, all battles
+ battles  pct_a_won  mean_gap  sd_gap  mean_trophy_diff  sd_trophy_diff  pct_gap_zero  pct_abs_gap_1plus  pct_abs_gap_over_2_5
+37802265     49.994   -0.0001   0.764            -0.004           15.76          24.9               17.7                  0.97 
+
+2. Win rate by level gap, all battles from both sides (gap rounded to 0.25 levels)
+ gap_bin  player_battles  win_rate
+   -3.00           71376  0.234631
+   -2.75          107922  0.216295
+   -2.50          172572  0.209594
+   -2.25          285108  0.216034
+   -2.00          480522  0.232657
+   -1.75          797503  0.257729
+   -1.50         1281506  0.288938
+   -1.25         1977344  0.323105
+   -1.00         2920726  0.360167
+   -0.75         4098667  0.398283
+   -0.50         5821241  0.436841
+   -0.25        10202585  0.474466
+    0.00        18796992  0.500000
+    0.25        10202585  0.525534
+    0.50         5821241  0.563159
+    0.75         4098667  0.601717
+    1.00         2920726  0.639833
+    1.25         1977344  0.676895
+    1.50         1281506  0.711062
+    1.75          797503  0.742271
+    2.00          480522  0.767343
+    2.25          285108  0.783966
+    2.50          172572  0.790406
+    2.75          107922  0.783705
+    3.00           71376  0.765369 
+
+3. Logistic regression on all battles: P(A wins) ~ level_gap + trophy_diff (37,768 cells; SEs clustered by player A)
+       term      coef       se     ci_lo    ci_hi
+      const -0.000178 0.000353 -0.000869 0.000514
+  level_gap  0.557346 0.000678  0.556018 0.558674
+trophy_diff  0.003831 0.000022  0.003789 0.003874
+   battles: 37,802,265; player clusters: 8,560,244
+
+   In plain terms (trophy difference 0):
+     level gap -2.0: P(win) = 24.7%
+     level gap -1.0: P(win) = 36.4%
+     level gap -0.5: P(win) = 43.1%
+     level gap +0.0: P(win) = 50.0%
+     level gap +0.5: P(win) = 56.9%
+     level gap +1.0: P(win) = 63.6%
+   Odds ratio per +1 level: 1.75; per +10 trophies: 1.039
+
+4. Level-gap effect by trophy band (separate full-data logit per band, clustered SEs)
+   Bands come from SQL. Do not round-trip rows through pandas and back into DuckDB to label them:
+   with preserve_insertion_order=false the rows come back reordered (an earlier version mislabeled
+   68.5% of rows this way and wrongly found no difference between bands).
+        band  battles   coef     se  p_win_minus1  p_win_minus1_lo  p_win_minus1_hi  p_win_minus_quarter  odds_ratio  or_lo  or_hi  sd_gap  pct_gap_1plus
+    a: <4000  2060104 0.7034 0.0027       33.1191          33.0029          33.2355              45.6300      2.0206 2.0101 2.0313   1.007          30.44
+b: 4000-4499 10657650 0.5142 0.0010       37.4028          37.3571          37.4484              46.7707      1.6722 1.6690 1.6755   1.079          33.29
+c: 4500-4999 14864852 0.5731 0.0009       36.0490          36.0102          36.0879              46.4203      1.7737 1.7707 1.7767   0.687          16.40
+d: 5000-5499  6880397 0.6799 0.0033       33.6410          33.4983          33.7840              45.7742      1.9736 1.9610 1.9863   0.260           1.09
+e: 5500-5999  2414507 0.7851 0.0098       31.3060          30.8938          31.7211              45.0903      2.1926 2.1509 2.2352   0.148           0.21
+    f: 6000+   924755 0.8447 0.0261       30.0755          29.0105          31.1624              44.7643      2.3272 2.2111 2.4494   0.091           0.06
+   Equality test across bands (Wald, clustered SEs, bands treated as independent): chi2 = 7204.1, df = 5, p < 1e-10
+   Where pct_gap_1plus is under 1%, p_win_minus1 is an extrapolation beyond the observed gaps.
+
+5. Robustness: deck controls on a 5% battle sample (24 win-condition presence differences + average elixir difference)
+   sample battles: 1,890,848
+   level_gap coef, same sample, without deck controls: +0.562 (95% CI +0.558, +0.567)
+   level_gap coef, same sample, with deck controls:    +0.596 (95% CI +0.591, +0.601)
+
+6. Skill-bias check: all players with 50+ battles, every battle from their side, linear probability model, SEs clustered by player
+   players: 143,117; player-battles: 14,527,369
+   sd of level gap: overall 0.485, within player 0.385
+   pp per +1 level, pooled (no player effects): +11.20 (95% CI +11.01, +11.39)
+   pp per +1 level, player fixed effects:       +17.74 (95% CI +17.59, +17.90)
+   pp per +10 trophies, pooled: +0.62 (95% CI +0.61, +0.64); fixed effects: +0.58 (95% CI +0.56, +0.59)
+
