@@ -2,12 +2,14 @@
 
 I've played Clash Royale for about ten years, and some matches felt decided by card levels before they started. So I measured it with 38 million battles.
 
+**Clash Royale in 30 seconds.** Clash Royale is a mobile strategy game where two players battle in real time, each with a deck of 8 cards. The ranked mode is called the ladder: winning gains about 30 trophies and losing costs about 30, and matchmaking pairs players with similar trophy counts. Every card can be upgraded to a higher level, which makes it stronger. Upgrades take in-game gold, which players can earn slowly or buy with real money, so two players with the same trophies can bring very different card strength. Above about 5,000 trophies, most players have fully upgraded cards.
+
 A product analytics project on 37.8 million Clash Royale ladder battles (Dec 7 2020 to Jan 4 2021). The SQL runs in DuckDB, and the models in statsmodels.
 
 ## TL;DR
 
-1. **Card levels decide a large share of matches.** A one-level card deficit cuts a player's chance of winning from 50% to 36%, and about one in four matches below 5,000 trophies has a gap that large.
-2. **Heavy players stop after wins, not losses.** After a loss, about 72% start another battle within 10 minutes (bounds 71% to 75%), however many losses in a row. After 1, 2 and 3+ wins in a row, that falls to 69% to 71%, 64% to 67%, and 61% to 64% (lower to upper bound).
+1. **Card levels decide a large share of matches.** Facing an opponent whose cards are one upgrade level stronger, on average, cuts a player's chance of winning from 50% to 36%, and about one in four matches below 5,000 trophies has a gap that large.
+2. **Heavy players stop after wins, not losses.** After a loss, about 72% start another match within 10 minutes (bounds 71% to 75%), however many losses in a row. After 1, 2 and 3+ wins in a row, that falls to 69% to 71%, 64% to 67%, and 61% to 64% (lower to upper bound).
 3. **The 36% figure probably understates how much cards matter.** At equal trophies, the player with better cards tends to be the weaker player, which hides part of the card advantage. Comparing each player only with themselves raises the effect from 11.2 to 17.7 points of win probability per level, so the 50% to 36% drop is likely an underestimate.
 
 From these, I designed an A/B test of a card level cap in matchmaking: [outputs/phase4_design.md](outputs/phase4_design.md).
